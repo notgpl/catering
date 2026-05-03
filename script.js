@@ -8,11 +8,17 @@
    ============================================================ */
 
 /* ── Preloader ── */
-window.addEventListener('load', () => {
-  const preloader = document.getElementById('preloader');
-  setTimeout(() => preloader.classList.add('hide'), 400);
-});
+window.addEventListener("load", hidePreloader);
 
+// fallback for mobile / slow networks
+setTimeout(hidePreloader, 2000);
+
+function hidePreloader() {
+  const preloader = document.getElementById("preloader");
+  if (preloader) {
+    preloader.classList.add("hide");
+  }
+}
 
 'use strict';
 
