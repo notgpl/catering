@@ -2,31 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>Cana Caters & Events — Luxury Events in Kerala</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
+
+  <!-- ===================== PRELOADER ===================== -->
   <div id="preloader">
-  <div class="loader">
-    <span class="ring"></span>
-    <span class="logo">C</span>
+    <div class="loader">
+      <span class="ring"></span>
+      <span class="preloader__letter">C</span>
+    </div>
   </div>
-</div>
 
   <!-- ===================== HEADER ===================== -->
   <header class="header" id="header">
     <div class="header__inner">
       <a href="#" class="logo">CANA</a>
       <nav class="nav">
-        <a href="#hero" class="nav__link">Home</a>
-        <a href="#about" class="nav__link">About</a>
+        <a href="#hero"     class="nav__link">Home</a>
+        <a href="#about"    class="nav__link">About</a>
         <a href="#services" class="nav__link">Services</a>
-        <a href="#why-us" class="nav__link">Why Us</a>
-        <a href="#gallery" class="nav__link">Gallery</a>
-        <a href="#contact" class="nav__link">Contact</a>
+        <a href="#why-us"   class="nav__link">Why Us</a>
+        <a href="#gallery"  class="nav__link">Gallery</a>
+        <a href="#contact"  class="nav__link">Contact</a>
       </nav>
       <a href="#contact" class="btn btn--outline">Inquire Now</a>
       <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -34,13 +38,13 @@
       </button>
     </div>
     <nav class="mobile-nav" id="mobile-nav">
-      <a href="#hero" class="mobile-nav__link">Home</a>
-      <a href="#about" class="mobile-nav__link">About</a>
+      <a href="#hero"     class="mobile-nav__link">Home</a>
+      <a href="#about"    class="mobile-nav__link">About</a>
       <a href="#services" class="mobile-nav__link">Services</a>
-      <a href="#why-us" class="mobile-nav__link">Why Us</a>
-      <a href="#gallery" class="mobile-nav__link">Gallery</a>
-      <a href="#contact" class="mobile-nav__link">Contact</a>
-      <a href="#contact" class="btn btn--gold mt-1">Inquire Now</a>
+      <a href="#why-us"   class="mobile-nav__link">Why Us</a>
+      <a href="#gallery"  class="mobile-nav__link">Gallery</a>
+      <a href="#contact"  class="mobile-nav__link">Contact</a>
+      <a href="#contact"  class="btn btn--gold mt-1">Inquire Now</a>
     </nav>
   </header>
 
@@ -85,7 +89,7 @@
           <p class="hero__sub">From product launches to award nights — precision execution, every time.</p>
           <div class="hero__actions">
             <a href="#services" class="btn btn--gold">Our Services</a>
-            <a href="#contact" class="btn btn--ghost">Get a Quote</a>
+            <a href="#contact"  class="btn btn--ghost">Get a Quote</a>
           </div>
         </div>
       </div>
@@ -104,7 +108,7 @@
           <p class="hero__sub">Handcrafted stage designs rooted in beauty, colour and meaning.</p>
           <div class="hero__actions">
             <a href="#gallery" class="btn btn--gold">View Gallery</a>
-            <a href="#about" class="btn btn--ghost">Our Story</a>
+            <a href="#about"   class="btn btn--ghost">Our Story</a>
           </div>
         </div>
       </div>
@@ -120,8 +124,8 @@
 
     <div class="hero-dots" id="heroDots">
       <button class="hero-dot active" data-slide="0" aria-label="Slide 1"></button>
-      <button class="hero-dot" data-slide="1" aria-label="Slide 2"></button>
-      <button class="hero-dot" data-slide="2" aria-label="Slide 3"></button>
+      <button class="hero-dot"        data-slide="1" aria-label="Slide 2"></button>
+      <button class="hero-dot"        data-slide="2" aria-label="Slide 3"></button>
     </div>
   </section>
 
@@ -407,19 +411,19 @@
             WhatsApp Us
           </a>
         </div>
-       <div class="contact__map">
-  <iframe
-    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d125971.59907474437!2d76.499691!3d9.3675187!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b063d57d0cc455f%3A0x78e44c446a6b6841!2sCana%20caters%20n%20events!5e0!3m2!1sen!2sin!4v1777804883125!5m2!1sen!2sin"
-    width="100%" 
-    height="220" 
-    style="border:0; border-radius:12px;" 
-    allowfullscreen 
-    loading="lazy"
-    referrerpolicy="no-referrer-when-downgrade"
-    title="Cana Caters Location">
-  </iframe>
-</div>
-</div>
+        <div class="contact__map">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d125971.59907474437!2d76.499691!3d9.3675187!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b063d57d0cc455f%3A0x78e44c446a6b6841!2sCana%20caters%20n%20events!5e0!3m2!1sen!2sin!4v1777804883125!5m2!1sen!2sin"
+            width="100%"
+            height="220"
+            style="border:0; border-radius:12px;"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Cana Caters Location">
+          </iframe>
+        </div>
+      </div>
 
       <div class="contact__form" data-aos="fade-left" data-aos-duration="900" data-aos-delay="150">
         <div class="form-card">
@@ -520,6 +524,7 @@
     </div>
   </footer>
 
+  <!-- ===================== FLOATING BUTTONS ===================== -->
   <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
   </button>
