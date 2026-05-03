@@ -1,51 +1,43 @@
 /* ============================================================
-   KURIAN'S EVENT PLANNERS — script.js
-   ============================================================
-   CUSTOMISATION:
-   - SLIDER_INTERVAL  : milliseconds between auto-slides (default 3500)
-   - CARDS_VISIBLE    : how many cards show at once on desktop (default 3)
-   - AOS settings     : edit AOS.init() at the bottom
+   CANA CATERS & EVENTS — script.js
    ============================================================ */
-
-/* ── Preloader ── */
-window.addEventListener("load", hidePreloader);
-
-// fallback for mobile / slow networks
-setTimeout(hidePreloader, 2000);
-
-function hidePreloader() {
-  const preloader = document.getElementById("preloader");
-  if (preloader) {
-    preloader.classList.add("hide");
-  }
-}
 
 'use strict';
 
 /* ── Config ── */
-const SLIDER_INTERVAL = 3500;  // ← ms between auto-slides. Edit here.
-const CARDS_VISIBLE   = 3;     // ← Cards shown at once on ≥1024px. Edit here.
+const SLIDER_INTERVAL = 3500;
+const CARDS_VISIBLE   = 3;
+
+/* ── Preloader ── */
+function hidePreloader() {
+  const preloader = document.getElementById('preloader');
+  if (preloader) preloader.classList.add('hide');
+}
+
+window.addEventListener('load', hidePreloader);
+// Fallback for slow networks
+setTimeout(hidePreloader, 2000);
+
 
 /* ================================================================
-   1.  HEADER — scroll effect + hamburger menu
+   1. HEADER — scroll effect + hamburger menu
    ================================================================ */
 (function initHeader() {
   const header    = document.getElementById('header');
   const hamburger = document.getElementById('hamburger');
   const mobileNav = document.getElementById('mobile-nav');
 
-  // Blur / shadow on scroll
+  if (!header || !hamburger || !mobileNav) return;
+
   window.addEventListener('scroll', () => {
     header.classList.toggle('scrolled', window.scrollY > 40);
   }, { passive: true });
 
-  // Hamburger toggle
   hamburger.addEventListener('click', () => {
     const open = hamburger.classList.toggle('open');
     mobileNav.classList.toggle('open', open);
   });
 
-  // Close mobile nav when a link is clicked
   mobileNav.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       hamburger.classList.remove('open');
@@ -56,36 +48,33 @@ const CARDS_VISIBLE   = 3;     // ← Cards shown at once on ≥1024px. Edit her
 
 
 /* ================================================================
-   2.  WHY-CHOOSE-US — auto-sliding carousel with dots + drag
+   2. WHY-CHOOSE-US — auto-sliding carousel with dots + drag
    ================================================================ */
 (function initWhySlider() {
-  const track = document.getElementById('whyTrack');
+  const track        = document.getElementById('whyTrack');
   const dotsContainer = document.getElementById('whyDots');
 
   if (!track || !dotsContainer) return;
 
-  // Apply overflow:hidden to the wrapper, not the outer slider
   const wrapper = track.closest('.why-slider__wrapper');
   if (wrapper) {
     wrapper.style.overflow = 'hidden';
-    wrapper.style.padding = '8px 0 24px';
+    wrapper.style.padding  = '8px 0 24px';
   }
 
   const cards = Array.from(track.children);
   const total = cards.length;
 
-  /* How many cards are visible depends on viewport */
   function getVisible() {
     if (window.innerWidth < 768)  return 1;
     if (window.innerWidth < 1024) return 2;
     return CARDS_VISIBLE;
   }
 
-  let current  = 0;
+  let current   = 0;
   let autoTimer;
   let isDragging = false, startX = 0, dragDelta = 0;
 
-  /* ── Build dots ── */
   function buildDots() {
     dotsContainer.innerHTML = '';
     const vis   = getVisible();
@@ -99,24 +88,21 @@ const CARDS_VISIBLE   = 3;     // ← Cards shown at once on ≥1024px. Edit her
     }
   }
 
-  /* ── Move to index ── */
   function goTo(index) {
-    const vis   = getVisible();
-    const max   = total - vis;
-    current     = Math.max(0, Math.min(index, max));
+    const vis = getVisible();
+    const max = total - vis;
+    current   = Math.max(0, Math.min(index, max));
 
-    const cardWidth  = cards[0].getBoundingClientRect().width;
-    const gap        = 24; // matches CSS gap
-    const offset     = current * (cardWidth + gap);
+    const cardWidth = cards[0].getBoundingClientRect().width;
+    const gap       = 24;
+    const offset    = current * (cardWidth + gap);
     track.style.transform = `translateX(-${offset}px)`;
 
-    // Update dots
     dotsContainer.querySelectorAll('.why-slider__dot').forEach((d, i) => {
       d.classList.toggle('active', i === current);
     });
   }
 
-  /* ── Auto-advance ── */
   function startAuto() {
     stopAuto();
     autoTimer = setInterval(() => {
@@ -125,11 +111,8 @@ const CARDS_VISIBLE   = 3;     // ← Cards shown at once on ≥1024px. Edit her
     }, SLIDER_INTERVAL);
   }
 
-  function stopAuto() {
-    clearInterval(autoTimer);
-  }
+  function stopAuto() { clearInterval(autoTimer); }
 
-  /* ── Drag / swipe ── */
   track.addEventListener('pointerdown', e => {
     isDragging = true;
     startX     = e.clientX;
@@ -146,16 +129,14 @@ const CARDS_VISIBLE   = 3;     // ← Cards shown at once on ≥1024px. Edit her
   track.addEventListener('pointerup', () => {
     if (!isDragging) return;
     isDragging = false;
-    if (dragDelta < -50) goTo(current + 1);
-    else if (dragDelta > 50) goTo(current - 1);
+    if (dragDelta < -50)       goTo(current + 1);
+    else if (dragDelta > 50)   goTo(current - 1);
     startAuto();
   });
 
-  /* ── Pause on hover ── */
   track.addEventListener('mouseenter', stopAuto);
   track.addEventListener('mouseleave', startAuto);
 
-  /* ── Keyboard accessibility ── */
   document.addEventListener('keydown', e => {
     const section = document.getElementById('why-us');
     if (!section) return;
@@ -165,12 +146,10 @@ const CARDS_VISIBLE   = 3;     // ← Cards shown at once on ≥1024px. Edit her
     if (e.key === 'ArrowLeft')  { goTo(current - 1); startAuto(); }
   });
 
-  /* ── Update card widths on resize ── */
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-      // Recalculate card flex-basis dynamically
       const vis = getVisible();
       const gap = 24;
       cards.forEach(c => {
@@ -181,7 +160,6 @@ const CARDS_VISIBLE   = 3;     // ← Cards shown at once on ≥1024px. Edit her
     }, 100);
   }, { passive: true });
 
-  /* ── Init ── */
   function init() {
     const vis = getVisible();
     const gap = 24;
@@ -198,7 +176,7 @@ const CARDS_VISIBLE   = 3;     // ← Cards shown at once on ≥1024px. Edit her
 
 
 /* ================================================================
-   3.  COUNTER ANIMATION — about section stats
+   3. COUNTER ANIMATION — about section stats
    ================================================================ */
 (function initCounters() {
   const counters = document.querySelectorAll('[data-count]');
@@ -209,7 +187,7 @@ const CARDS_VISIBLE   = 3;     // ← Cards shown at once on ≥1024px. Edit her
       if (!entry.isIntersecting) return;
       const el    = entry.target;
       const end   = parseInt(el.dataset.count, 10);
-      const dur   = 2000; // ms
+      const dur   = 2000;
       const step  = 16;
       const steps = dur / step;
       const inc   = end / steps;
@@ -233,27 +211,37 @@ const CARDS_VISIBLE   = 3;     // ← Cards shown at once on ≥1024px. Edit her
 
 
 /* ================================================================
-   4.  SMOOTH SCROLL — active nav link highlight
+   4. ACTIVE NAV — highlight current section
    ================================================================ */
 (function initActiveNav() {
   const links    = document.querySelectorAll('.nav__link');
   const sections = document.querySelectorAll('section[id]');
 
-  window.addEventListener('scroll', () => {
-    let current = '';
+  function update() {
+    const scrollY = window.scrollY;
+    let current = 'hero';
+
     sections.forEach(sec => {
-      const offset = sec.offsetTop - 120;
-      if (window.scrollY >= offset) current = sec.id;
+      const offset = sec.offsetTop - 140;
+      if (scrollY >= offset) current = sec.id;
     });
+
     links.forEach(link => {
-      link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+      const href    = link.getAttribute('href');
+      const matches = href === `#${current}` ||
+        (href === '#hero' && current === 'hero') ||
+        (href === '#'     && current === 'hero');
+      link.classList.toggle('active', matches);
     });
-  }, { passive: true });
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
 })();
 
 
 /* ================================================================
-   5.  FORM SUBMISSION — basic validation + feedback
+   5. FORM SUBMISSION — basic validation + feedback
    ================================================================ */
 function submitForm() {
   const name    = document.getElementById('fullName');
@@ -277,14 +265,13 @@ function submitForm() {
     return;
   }
 
-  // Replace this block with your actual form submission (fetch/axios to a backend)
   showToast('✓ Inquiry submitted! We\'ll reach out within 24 hours.', 'success');
   fields.forEach(f => f.value = '');
 }
 
 
 /* ================================================================
-   6.  TOAST NOTIFICATION
+   6. TOAST NOTIFICATION
    ================================================================ */
 function showToast(message, type = 'success') {
   const existing = document.querySelector('.toast');
@@ -329,18 +316,14 @@ function showToast(message, type = 'success') {
 
 
 /* ================================================================
-   7.  FOOTER YEAR
+   7. FOOTER YEAR
    ================================================================ */
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 
 /* ================================================================
-   8.  AOS — Animate On Scroll init
-   CUSTOMISE:
-   - duration  : default animation duration (ms)
-   - once      : true = animate only first time
-   - offset    : px from bottom of viewport to trigger
+   8. AOS — Animate On Scroll
    ================================================================ */
 AOS.init({
   duration : 800,
@@ -351,18 +334,18 @@ AOS.init({
 
 
 /* ================================================================
-   9.  HERO SLIDER — 3-slide auto-advance with arrows & dots
+   9. HERO SLIDER — 3-slide auto-advance with arrows & dots
    ================================================================ */
 (function initHeroSlider() {
-  const slides     = document.querySelectorAll('.hero-slide');
-  const dots       = document.querySelectorAll('.hero-dot');
-  const prevBtn    = document.getElementById('heroPrev');
-  const nextBtn    = document.getElementById('heroNext');
+  const slides      = document.querySelectorAll('.hero-slide');
+  const dots        = document.querySelectorAll('.hero-dot');
+  const prevBtn     = document.getElementById('heroPrev');
+  const nextBtn     = document.getElementById('heroNext');
   const totalSlides = slides.length;
 
   if (!totalSlides) return;
 
-  let current   = 0;
+  let current = 0;
   let timer;
 
   function goTo(index) {
@@ -378,7 +361,7 @@ AOS.init({
 
   function startAuto() {
     clearInterval(timer);
-    timer = setInterval(next, 5000); // 5s per hero slide
+    timer = setInterval(next, 5000);
   }
 
   if (prevBtn) prevBtn.addEventListener('click', () => { prev(); startAuto(); });
@@ -395,11 +378,13 @@ AOS.init({
   let touchStartX = 0;
   const slider = document.getElementById('heroSlider');
   if (slider) {
-    slider.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    slider.addEventListener('touchstart', e => {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
     slider.addEventListener('touchend', e => {
       const delta = e.changedTouches[0].clientX - touchStartX;
-      if (delta < -50) { next(); startAuto(); }
-      else if (delta > 50) { prev(); startAuto(); }
+      if (delta < -50)      { next(); startAuto(); }
+      else if (delta > 50)  { prev(); startAuto(); }
     }, { passive: true });
   }
 
@@ -421,35 +406,4 @@ AOS.init({
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
-})();
-
-
-/* ================================================================
-   11. ACTIVE NAV — include Home (#hero / top of page)
-   ================================================================ */
-// Override the existing initActiveNav to include #hero (Home)
-(function patchActiveNav() {
-  const links    = document.querySelectorAll('.nav__link');
-  const sections = document.querySelectorAll('section[id]');
-
-  function update() {
-    const scrollY = window.scrollY;
-    let current = 'hero'; // default to Home
-
-    sections.forEach(sec => {
-      const offset = sec.offsetTop - 140;
-      if (scrollY >= offset) current = sec.id;
-    });
-
-    links.forEach(link => {
-      const href = link.getAttribute('href');
-      const matches = href === `#${current}` ||
-        (href === '#hero' && current === 'hero') ||
-        (href === '#' && current === 'hero');
-      link.classList.toggle('active', matches);
-    });
-  }
-
-  window.addEventListener('scroll', update, { passive: true });
-  update(); // run on load
 })();
